@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostsController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Auth::routes(['verify'=>true]);
+
 Route::middleware(['auth', 'verified'])->group(function (){
 
     Route::get('/', function () {
@@ -29,6 +31,16 @@ Route::middleware(['auth', 'verified'])->group(function (){
     })->middleware('isAdmin');
 
     Route::resource('/posts',PostsController::class);
+});
+Route::get('message',function (){
+//    dd(App::getLocale());
+    return view('message');
+});
+Route::prefix("en")->group(function (){
+//    App::setLocale('en');
+    Route::get('message',function (){
+        return view('message');
+    });
 });
 Route::get('/session',function (Request $request){
 //    session(['username'=>'ali']);
